@@ -173,7 +173,10 @@ class Worker2(QtCore.QObject):
         k = get_all_features(resource_path("voice.wav"))
         k = np.stack((k,k,k), -1)
         a = self.model.predict(k)
-        self.oran = a[0][1]
+        healthy = []
+        for i in range(a.shape[0]):
+            healthy.append(a[i][1])
+        self.oran = sum(healthy) / len(healthy)
         self.oran = self.oran * 100.0
         self.oran = np.round(self.oran, 2)
         
